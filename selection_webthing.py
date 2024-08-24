@@ -17,8 +17,8 @@ class SelectionThing(Thing):
 
         Thing.__init__(
             self,
-            'urn:dev:ops:selection-1',
-            'Selection',
+            'urn:dev:ops:selections-1',
+            'Selections',
             ['MultiLevelSensor'],
             description
         )
@@ -60,7 +60,7 @@ class SelectionThing(Thing):
                          metadata={
                              'title': name,
                              "type": "boolean",
-                             'description': name,
+                             'description': name + " selection",
                              'readOnly': False,
                          }))
             self.values[name] = value
