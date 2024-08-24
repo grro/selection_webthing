@@ -1,3 +1,4 @@
+import logging
 from typing import List, Dict
 
 
@@ -16,6 +17,7 @@ class Selection:
         return list(self.__selections.keys())
 
     def select(self, name: str, selected: bool):
+        logging.info(name + " selected="  +str(selected))
         if selected:
             self.selected_name = name
             self.selected_value = self.__selections.get(name)
