@@ -17,9 +17,9 @@ class Selection:
         return list(self.__selections.keys())
 
     def select(self, name: str):
-        logging.info(name + " selected")
         self.selected_name = name
         self.selected_value = self.__selections.get(name)
+        logging.info(name + " selected (value: " + self.selected_value + ")")
         self.__notify_listener()
 
     def set_listener(self,listener):
