@@ -52,18 +52,7 @@ class SelectionThing(Thing):
                      }))
 
         for name in self.selection.selection_names:
-            value = Value(False, lambda selected: self.selection.select(name, selected))
-            self.add_property(
-                Property(self,
-                         name,
-                         value,
-                         metadata={
-                             'title': name,
-                             "type": "boolean",
-                             'description': name + " selection",
-                             'readOnly': False,
-                         }))
-            self.values[name] = value
+            add_value(self, name)
 
     def on_value_changed(self):
         self.ioloop.add_callback(self._on_value_changed)
@@ -71,6 +60,21 @@ class SelectionThing(Thing):
     def _on_value_changed(self):
         self.selected_name.notify_of_external_update(self.selection.selected_name)
         self.selected_value.notify_of_external_update(self.selection.selected_value)
+
+
+def add_value(thing: SelectionThing, name: str):
+    value = Value(False, lambda selected: thing.selection.select(name))
+    thing.add_property(
+        Property(thing,
+                 name,
+                 value,
+                 metadata={
+                     'title': name,
+                     "type": "boolean",
+                     'description': name + " selection",
+                     'readOnly': False,
+                 }))
+    thing.values[name] = value
 
 
 def run_server(description: str, port: int, selections: Dict[str, str]):
