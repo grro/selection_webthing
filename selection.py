@@ -16,7 +16,7 @@ class Selection(FileSystemEventHandler):
         self.__file = file
         logging.info("using config file " + self.__file)
         self.__parse()
-        self.selected_name = sorted(list(self.__options.keys()))[0]
+        self.selected_name = self.selection_names[0]
         self.selected_value = self.__options.get(self.selected_name)
         observer = Observer()
         observer.schedule(self, Path(file).parent, recursive=False)
@@ -24,7 +24,7 @@ class Selection(FileSystemEventHandler):
 
     @property
     def selection_names(self) -> List:
-        return list(self.__options.keys())
+        return sorted(list(self.__options.keys()))
 
     def select(self, name: str):
         self.selected_name = name
@@ -42,7 +42,7 @@ class Selection(FileSystemEventHandler):
         with open(self.__file, 'r') as file:
             conf = yaml.safe_load(file)
             self.__options = dict(conf)
-            logging.info(self.__file + " (re)loaded " + str(self.__selections))
+            logging.info(self.__file + " (re)loaded " + str(self.__options))
 
     def set_listener(self,listener):
         self.__listener = listener

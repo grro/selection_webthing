@@ -17,7 +17,7 @@ class SelectionThing(Thing):
         Thing.__init__(
             self,
             'urn:dev:ops:selections-1',
-            'Selections',
+            'Selections2',
             ['MultiLevelSensor'],
             description
         )
