@@ -3,7 +3,7 @@ import logging
 import tornado.ioloop
 from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
 from selection import Selection
-from typing import Dict
+from options import Options
 
 
 
@@ -77,8 +77,8 @@ def add_value(thing: SelectionThing, name: str):
     thing.values[name] = value
 
 
-def run_server(description: str, port: int, selections: Dict[str, str]):
-    selection = Selection(selections)
+def run_server(description: str, port: int, options: Options):
+    selection = Selection(options)
     server = WebThingServer(SingleThing(SelectionThing(description, selection)), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server http://localhost:' + str(port))
@@ -89,17 +89,8 @@ def run_server(description: str, port: int, selections: Dict[str, str]):
         logging.info('done')
 
 
-
-def parse_map(text: str) -> Dict[str, str]:
-    result = dict()
-    for part in text.split("&"):
-        station, url = part.strip().split("=")
-        result[station.lower()] = url
-    return result
-
-
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(name)-20s: %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
     logging.getLogger('tornado.access').setLevel(logging.ERROR)
     logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
-    run_server("description", int(sys.argv[1]), parse_map(sys.argv[2]))
+    run_server("description", int(sys.argv[1]), Options(sys.argv[2]))
