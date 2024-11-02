@@ -23,10 +23,11 @@ class Options(FileSystemEventHandler):
 
     def on_modified(self, event):
         if not event.is_directory and event.src_path == self.__file:
-            print("file " + self.__file + "has been changed. rebuilt config")
+            print("file " + self.__file + "has been changed")
             self.__parse()
 
     def __parse(self):
         with open(self.__file, 'r') as file:
             conf = yaml.safe_load(file)
             self.__selections = dict(conf)
+            print("config (re)loaded " + str(self.__selections))
