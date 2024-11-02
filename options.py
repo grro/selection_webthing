@@ -11,6 +11,7 @@ class Options(FileSystemEventHandler):
     def __init__(self, file: str):
         self.__selections = dict()
         self.__file = file
+        logging.info("using config file " + self.__file)
         self.__parse()
         observer = Observer()
         observer.schedule(self, Path(file).parent, recursive=False)
