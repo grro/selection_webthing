@@ -85,9 +85,13 @@ def run_server(description: str, port: int, config_file: str):
     server = WebThingServer(SingleThing(SelectionThing(description, selection)), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server http://localhost:' + str(port))
+        web_server.start()
+        mcp_server.start()
         server.start()
     except KeyboardInterrupt:
         logging.info('stopping the server')
+        web_server.stop()
+        mcp_server.stop()
         server.stop()
         logging.info('done')
 
