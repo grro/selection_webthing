@@ -25,12 +25,7 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
                 valid_names = ", ".join(self.server.selection.selection_names)
                 self._send_json(400, {"error": f"Supported names: {valid_names}"})
         else:
-            html = "<h1>Available Selections</h1><ul>"
-            for name in self.server.selection.selection_names:
-                # Ensure name is handled as a string
-                html += f"<li><a href='?name={name}'>{name}</a></li>"
-            html += "</ul>"
-            self._send_html(200, html)
+            self._send_json(200, {"selected": self.server.selection.selected_name})
 
     def _send_html(self, status, message):
         self.send_response(status)

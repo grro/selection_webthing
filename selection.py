@@ -46,6 +46,7 @@ class Selection(FileSystemEventHandler):
 
     def set_listener(self,listener):
         self.__listener = listener
+        self.__notify_listener()
 
     def __notify_listener(self):
         self.__listener()
