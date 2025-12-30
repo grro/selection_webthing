@@ -81,7 +81,7 @@ def add_value(thing: SelectionThing, name: str):
 def run_server(description: str, port: int, config_file: str):
     selection = Selection(config_file)
     web_server = SelectionWebServer(selection, port=port+1)
-    mcp_server = SelectionMCPServer(selection, port=port+2)
+    mcp_server = SelectionMCPServer("cam", selection=selection, port=port+2)
     server = WebThingServer(SingleThing(SelectionThing(description, selection)), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server http://localhost:' + str(port))
