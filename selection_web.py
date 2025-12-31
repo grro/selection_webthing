@@ -4,7 +4,7 @@ import logging
 from urllib.parse import urlparse, parse_qs
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from selection import Selection
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 
 class SimpleRequestHandler(BaseHTTPRequestHandler):
@@ -14,18 +14,36 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        selection: Selection = self.server.selection
         parsed_url = urlparse(self.path)
-        query_params = parse_qs(parsed_url.query)
-        if 'select' in query_params:
-            name = query_params['name'][0]
-            if name in self.server.selection.selection_names:
-                self.server.selection.select(name)
-                self._send_json(200, {"status": "success", "selected": name})
+        path = parsed_url.path.lstrip("/")
+
+        if path == 'value':
+            self._send_json(200, {'value': selection.selected_value})
+
+        elif path in selection.selection_names:
+            query_params = parse_qs(parsed_url.query)
+
+            if 'select' in query_params:
+                # Proper boolean parsing from string
+                val = query_params['select'][0].lower()
+                is_selected = val in ['true', '1', 'yes']
+
+                if is_selected:
+                    selection.select(path)
+                self._send_json(200, {"status": "success", "selected": path})
             else:
-                valid_names = ", ".join(self.server.selection.selection_names)
-                self._send_json(400, {"error": f"Supported names: {valid_names}"})
+                is_selected = (selection.selected_value == path)
+                self._send_json(200, {'name': path, 'is_selected': is_selected })
+
         else:
-            self._send_json(200, {"selected": self.server.selection.selected_name})
+            html = "<h1>Available Selections</h1><ul>"
+            for name in selection.selection_names:
+                active = " (Active)" if selection.selected_value == name else ""
+                html += f"<li><a href='/{name}?select=true'>{name}</a>{active}</li>"
+            html += "</ul>"
+            self._send_html(200, html)
+
 
     def _send_html(self, status, message):
         self.send_response(status)
@@ -40,7 +58,7 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data).encode("utf-8"))
 
 class SelectionWebServer:
-    def __init__(self, selection: Selection,  host='0000', port=8000):
+    def __init__(self, selection: Selection,  host='0.0.0.0', port=8000):
         self.host = host
         self.port = port
         self.address = (self.host, self.port)
