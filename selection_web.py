@@ -19,7 +19,7 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         path = parsed_url.path.lstrip("/")
 
         if path == 'value':
-            self._send_text(selection.selected_value)
+            self._send_text(200, selection.selected_value)
 
         elif path in selection.selection_names:
             query_params = parse_qs(parsed_url.query)
