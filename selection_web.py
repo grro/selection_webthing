@@ -34,7 +34,7 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
                 self._send_json(200, {"status": "success", "selected": path})
             else:
                 is_selected = (selection.selected_value == path)
-                self._send_json(200, {'name': path, 'is_selected': is_selected })
+                self._send_json(200, {'name': path, 'is_selected': 'true' if is_selected else 'false'})
 
         else:
             html = "<h1>Available Selections</h1><ul>"
