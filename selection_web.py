@@ -4,7 +4,7 @@ import logging
 from urllib.parse import urlparse, parse_qs
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from selection import Selection
-from typing import Dict, Any
+from typing import List, Dict, Any
 
 
 class SimpleRequestHandler(BaseHTTPRequestHandler):
@@ -19,7 +19,7 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         path = parsed_url.path.lstrip("/")
 
         if path == 'value':
-            self._send_json(200, {'value': selection.selected_value})
+            self._send_text(selection.selected_value)
 
         elif path in selection.selection_names:
             query_params = parse_qs(parsed_url.query)
@@ -56,6 +56,12 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "application/json")
         self.end_headers()
         self.wfile.write(json.dumps(data).encode("utf-8"))
+
+    def _send_text(self, status, data: str):
+        self.send_response(status)
+        self.send_header("Content-type", "text/plain; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(data.encode("utf-8"))
 
 class SelectionWebServer:
     def __init__(self, selection: Selection,  host='0.0.0.0', port=8000):
