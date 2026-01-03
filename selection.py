@@ -21,19 +21,19 @@ class BackToDefaultTimer:
 
     def __run(self):
         while True:
-            now = datetime.now()
-            elapsed = (now - self.__selection.selection_time).total_seconds()
-            if elapsed >= self.__back_to_default_sec:
-                default_name = self.__selection.selection_names[0]
-                if self.__selection.selected_name != default_name:
-                    logging.info(f"back to default selection '{default_name}' after {self.__back_to_default_sec} seconds")
-                    self.__selection.select(default_name)
             try:
-                sleep_time = max(1, self.__back_to_default_sec - elapsed)
+                now = datetime.now()
+                elapsed = (now - self.__selection.selection_time).total_seconds()
+                if elapsed >= self.__back_to_default_sec:
+                    default_name = self.__selection.selection_names[0]
+                    if self.__selection.selected_name != default_name:
+                        logging.info(f"back to default selection '{default_name}' after {self.__back_to_default_sec} seconds")
+                        self.__selection.select(default_name)
+                sleep_time = max(1, int(self.__back_to_default_sec - elapsed))
                 sleep(sleep_time)
             except Exception:
                 pass
-            sleep(2)
+            sleep(3)
 
 
 class Selection(FileSystemEventHandler):
