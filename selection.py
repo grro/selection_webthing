@@ -60,6 +60,7 @@ class Selection(FileSystemEventHandler):
         return sorted(list(self.__options.keys()))
 
     def select(self, name: str):
+        self.selection_time = datetime.now()
         self.selected_name = name
         self.selected_value = self.__options.get(name)
         logging.info(name + " selected (value: " + self.selected_value + ")")
