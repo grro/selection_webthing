@@ -78,8 +78,8 @@ def add_value(thing: SelectionThing, name: str):
     thing.values[name] = value
 
 
-def run_server(description: str, port: int, config_file: str):
-    selection = Selection(config_file)
+def run_server(description: str, port: int, config_file: str, back_to_default_sec: int):
+    selection = Selection(config_file, back_to_default_sec)
     web_server = SelectionWebServer(selection, port=port+1)
     mcp_server = SelectionMCPServer("cam", selection=selection, port=port+2)
     server = WebThingServer(SingleThing(SelectionThing(description, selection)), port=port, disable_host_validation=True)
@@ -100,4 +100,4 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(name)-20s: %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
     logging.getLogger('tornado.access').setLevel(logging.ERROR)
     logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
-    run_server("description", int(sys.argv[1]), sys.argv[2])
+    run_server("description", int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

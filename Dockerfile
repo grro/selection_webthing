@@ -2,7 +2,7 @@ FROM python:3-alpine
 
 ENV port 8343
 ENV config path
-
+ENV back_to_default_sec 31540000
 
 RUN cd /etc
 RUN mkdir app
@@ -11,7 +11,4 @@ ADD *.py /etc/app/
 ADD requirements.txt /etc/app/.
 RUN pip install -r requirements.txt
 
-CMD python /etc/app/selection_webthing.py $port $config
-
-
-
+CMD python /etc/app/selection_webthing.py $port $config $back_to_default_sec
