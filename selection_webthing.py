@@ -28,7 +28,7 @@ class SelectionThing(Thing):
         self.values = dict()
         self.selection.set_listener(self.on_value_changed)
 
-        self.selected_name = Value(self.selection.selected_name)
+        self.selected_name = Value(self.selection.selected_name, self.selection.select)
         self.add_property(
             Property(self,
                      'selected_name',
@@ -37,7 +37,7 @@ class SelectionThing(Thing):
                          'title': 'selected_name',
                          "type": "string",
                          'description': 'the selected name',
-                         'readOnly': True,
+                         'readOnly': False,
                      }))
 
         self.selected_value = Value(self.selection.selected_value)
