@@ -10,7 +10,7 @@ from watchdog.events import FileSystemEventHandler
 
 class Selection(FileSystemEventHandler):
 
-    def __init__(self, file: str, back_to_default_sec: int):
+    def __init__(self, file: str):
         self.__listener = lambda: None    # "empty" listener
         self.__options = dict()
         self.__selections = dict()
