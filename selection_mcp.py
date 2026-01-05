@@ -23,6 +23,10 @@ class SelectionMCPServer(MCPServer):
             """Returns the value associated with the current selection."""
             return str(self.selection.selected_value)
 
+        @self.mcp.resource("selection://current/selection_time")
+        def get_selection_time() -> str:
+            """Returns the ISO timestamp of the last selection change."""
+            return self.selection.selection_time.strftime("%Y-%m-%dT%H:%M:%S")
 
         @self.mcp.tool()
         def select_item(name: str) -> str:

@@ -21,6 +21,9 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         if path == 'value':
             self._send_text(200, selection.selected_value)
 
+        elif path == 'selectiontime':
+            self._send_text(200, selection.selection_time.strftime("%Y-%m-%dT%H:%M:%S"))
+
         elif path in selection.selection_names:
             query_params = parse_qs(parsed_url.query)
 
@@ -39,7 +42,7 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         else:
             html = "<h1>Available Selections</h1><ul>"
             for name in selection.selection_names:
-                active = " (Active)" if selection.selected_value == name else ""
+                active = " (Active; Selection time: " + selection.selection_time.strftime("%Y-%m-%dT%H:%M:%S") + ")" if selection.selected_value == name else ""
                 html += f"<li><a href='/{name}?select=true'>{name}</a>{active}</li>"
             html += "</ul>"
             self._send_html(200, html)

@@ -52,6 +52,18 @@ class SelectionThing(Thing):
                          'readOnly': True,
                      }))
 
+        self.selection_time = Value(self.selection.selection_time.strftime("%Y-%m-%dT%H:%M:%S"))
+        self.add_property(
+            Property(self,
+                     'selection_time',
+                     self.selection_time,
+                     metadata={
+                         'title': 'selection_time',
+                         "type": "string",
+                         'description': 'the time of the last selection (ISO format)',
+                         'readOnly': True,
+                     }))
+
         for name in self.selection.selection_names:
             add_value(self, name)
 
@@ -61,6 +73,7 @@ class SelectionThing(Thing):
     def _on_value_changed(self):
         self.selected_name.notify_of_external_update(self.selection.selected_name)
         self.selected_value.notify_of_external_update(self.selection.selected_value)
+        self.selection_time.notify_of_external_update(self.selection.selection_time.strftime("%Y-%m-%dT%H:%M:%S"))
 
 
 def add_value(thing: SelectionThing, name: str):
