@@ -27,11 +27,16 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
         elif path in selection.selection_names:
             query_params = parse_qs(parsed_url.query)
 
-            if 'select' in query_params:
-                # Proper boolean parsing from string
+            if 'select_silent' in query_params:
                 val = query_params['select'][0].lower()
                 is_selected = val in ['true', '1', 'yes']
+                if is_selected:
+                    selection.select_silent(path)
+                self._send_json(200, {"status": "success"})
 
+            elif 'select' in query_params:
+                val = query_params['select'][0].lower()
+                is_selected = val in ['true', '1', 'yes']
                 if is_selected:
                     selection.select(path)
                 self._send_json(200, {"status": "success"})

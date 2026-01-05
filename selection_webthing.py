@@ -40,6 +40,19 @@ class SelectionThing(Thing):
                          'readOnly': False,
                      }))
 
+
+        self.silent_selected_name = Value(self.selection.selected_name, self.selection.select_silent)
+        self.add_property(
+            Property(self,
+                     'silent_selected_name',
+                     self.silent_selected_name,
+                     metadata={
+                         'title': 'silent_selected_name',
+                         "type": "string",
+                         'description': 'the selected name',
+                         'readOnly': False,
+                     }))
+
         self.selected_value = Value(self.selection.selected_value)
         self.add_property(
             Property(self,
@@ -72,6 +85,7 @@ class SelectionThing(Thing):
 
     def _on_value_changed(self):
         self.selected_name.notify_of_external_update(self.selection.selected_name)
+        self.silent_selected_name.notify_of_external_update(self.selection.selected_name)
         self.selected_value.notify_of_external_update(self.selection.selected_value)
         self.selection_time.notify_of_external_update(self.selection.selection_time.strftime("%Y-%m-%dT%H:%M:%S"))
 

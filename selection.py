@@ -61,6 +61,9 @@ class Selection(FileSystemEventHandler):
 
     def select(self, name: str):
         self.selection_time = datetime.now()
+        self.select_silent(name)
+
+    def select_silent(self, name: str):
         self.selected_name = name
         self.selected_value = self.__options.get(name)
         logging.info(name + " selected (value: " + self.selected_value + ")")

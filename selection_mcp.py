@@ -42,6 +42,20 @@ class SelectionMCPServer(MCPServer):
                 valid = ", ".join(self.selection.selection_names)
                 return f"Error: '{name}' is not valid. Choose from: {valid}"
 
+        @self.mcp.tool()
+        def select_silent_item(name: str) -> str:
+            """
+            Changes the active selection silently.
+            Args:
+                name: The name of the item to select.
+            """
+            if name in self.selection.selection_names:
+                self.selection.select_silent(name)
+                return f"Successfully selected: {name}"
+            else:
+                valid = ", ".join(self.selection.selection_names)
+                return f"Error: '{name}' is not valid. Choose from: {valid}"
+
 
 # npx @modelcontextprotocol/inspector
 
