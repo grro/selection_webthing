@@ -23,6 +23,14 @@ class Selection(FileSystemEventHandler):
         observer = Observer()
         observer.schedule(self, Path(file).parent, recursive=False)
         observer.start()
+        logging.info("selections loaded:\n" + self.info)
+
+    @property
+    def info(self) -> str:
+        text = ""
+        for name in self.selected_name:
+            text += ("*" if name == self.selected_name else "") + name + ": " + str(self.__options.get(name)) + "\n"
+        return text
 
     @property
     def selection_names(self) -> List:
@@ -35,8 +43,9 @@ class Selection(FileSystemEventHandler):
     def select_silent(self, name: str):
         self.selected_name = name
         self.selected_value = self.__options.get(name)
-        logging.info(name + " selected (value: " + self.selected_value + ")")
         self.__notify_listener()
+        logging.info(name + " selected (value: " + self.selected_value + ")")
+        logging.info(self.info)
 
     def on_modified(self, event):
         if not event.is_directory and event.src_path == self.__file:
