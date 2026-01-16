@@ -17,7 +17,8 @@ class Selection(FileSystemEventHandler):
         self.__file = file
         logging.info("using config file " + self.__file)
         self.__parse()
-        self.selected_name = self.selection_names[0]
+        self.selected_name = None
+        self.select(self.selection_names[0])
         self.selected_value = self.__options.get(self.selected_name)
         self.selection_time = datetime.now()
         observer = Observer()
