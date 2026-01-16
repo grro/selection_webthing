@@ -28,7 +28,7 @@ class Selection(FileSystemEventHandler):
     @property
     def info(self) -> str:
         text = ""
-        for name in self.selected_name:
+        for name in self.selection_names:
             text += ("*" if name == self.selected_name else "") + name + ": " + str(self.__options.get(name)) + "\n"
         return text
 
