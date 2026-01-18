@@ -1,4 +1,4 @@
-from mcp_server import MCPServer
+from mcplib.server import MCPServer
 from selection import Selection
 
 
