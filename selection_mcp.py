@@ -71,6 +71,7 @@ class SelectionMCPServer:
         self.mdns = MDNS()
         self.mcp = FastMCP(self.name)
 
+        self.loop: Optional[asyncio.AbstractEventLoop] = None
         self.is_running = True
 
         self._setup_mcp()
@@ -135,6 +136,8 @@ class SelectionMCPServer:
     def start(self):
         self.mdns.register_mdns(self.name, self.port)
 
+        self.loop = asyncio.new_event_loop()
+
         def _run_loop():
             asyncio.set_event_loop(self.loop)
             try:
@@ -148,7 +151,7 @@ class SelectionMCPServer:
 
     def stop(self):
         self.mdns.unregister_mdns(self.name)
-        if self.loop.is_running():
+        if self.loop is not None and self.loop.is_running():
             self.loop.call_soon_threadsafe(self.loop.stop)
         self.is_running = False
         logging.info("MCP Server stopped")
