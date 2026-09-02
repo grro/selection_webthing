@@ -35,7 +35,7 @@ class Selection(FileSystemEventHandler):
 
     @property
     def selection_names(self) -> List:
-        return sorted(list(self.__options.keys()))
+        return list(self.__options.keys())
 
     def select(self, name: str):
         self.selection_time = datetime.now()
@@ -66,7 +66,4 @@ class Selection(FileSystemEventHandler):
 
     def __notify_listener(self):
         self.__listener()
-
-
-
 
